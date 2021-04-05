@@ -21,7 +21,7 @@
 [[논문] 정량적인 OSS 선정을 위한 평가지표 연구](http://jkais99.org/journal/v13n4/57/46da.html)
 
 
-
+[공유의 진정한 가치, '오픈소스'](http://www.epnc.co.kr/news/articleView.html?idxno=98334)
 
 
 
