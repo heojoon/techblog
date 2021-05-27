@@ -54,7 +54,7 @@ Task는 명령어 한줄에 대응하여 성공/실패 여부를 엄격하게 �
 
 ## 4. GoCD Server 구성
 
-### 4.1. requirements
+### 4.1. Requirements
 
 * **Hardware**
   
@@ -170,7 +170,7 @@ systemctl start go-server
 
 ## 5. GoCD Agent 구성
 
-### 5.1. requirements
+### 5.1. Requirements
 
 * **Hardware**
   * **RAM** - minimum 128MB, 256MB recommended
@@ -229,7 +229,7 @@ cd /app/go-agent-21.2.0/bin
 
 ![image-20210503202525928](imgs/image-20210503202525928.png)
 
-### 5.3. 서비스 데몬으로 등록 (Optional)
+### 5.3. 서비스 데몬 등록 (Optional)
 
 * 기본적인 systemctl 서비스 데몬 시스템으로 등록하기 위해 다음과 같은 설정을 할 수 있습니다. (root 권한 실행)
 
@@ -284,9 +284,10 @@ cd /app/go-agent-21.2.0/bin
 
   >  필수적으로 go-agent 프로세스가 wasuser로 구동 되었는지 확인합니다.
 
-*  
+  
 
-* 
+  
+
 
 ## 6. GoCD Pipeline 구성
 
