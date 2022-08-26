@@ -1,0 +1,40 @@
+---
+clusterName: "elasticsearch"
+nodeGroup: "master"
+
+replicas: 3
+minimumMasterNode: 2
+
+# Shrink default JVM heap.
+esJavaOpts: "-Xmx1g -Xms1g"
+
+# Allocate smaller chunks of memory per pod.
+resources:
+  requests:
+    cpu: "1"
+    memory: "1Gi"
+  limits:
+    cpu: "1"
+    memory: "2Gi"
+
+# Request smaller persistent volumes.
+volumeClaimTemplate:
+  accessModes: [ "ReadWriteOnce" ]
+  storageClassName: "gp2"
+  resources:
+    requests:
+      storage: 10Gi
+
+# Define service port , transport port.
+protocol: http
+httpPort: 9200
+transportPort: 9300
+
+extraVolumes:
+  - name: tz-config
+    hostPath:
+      path: /usr/share/zoneinfo/Asia/Seoul
+
+extraVolumeMounts:
+  - name: tz-config
+    mountPath: /etc/localtime
