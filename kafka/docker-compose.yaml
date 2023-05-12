@@ -1,0 +1,50 @@
+version: '3'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+      - ZOOKEEPER_AUTH_PROVIDER_1=org.apache.zookeeper.server.auth.SASLAuthenticationProvider
+      - ZOOKEEPER_REQUIRE_CLIENT_AUTH_SCHEME=sasl
+      - ZOOKEEPER_JAAS_LOGIN_RENEW=3600000
+      - ZOOKEEPER_SERVER_CNXN_FACTORY=org.apache.zookeeper.server.NettyServerCnxnFactory
+      - ZOOKEEPER_ADMIN_ENABLE_SERVER=true
+      - ZOOKEEPER_SASL_ENABLED=true
+      - ZOOKEEPER_SASL_CLIENT=true
+      - KAFKA_OPTS=-Djava.security.auth.login.config=/etc/zookeeper/zookeeper_jaas.conf
+
+    volumes:
+      - ./zookeeper_jaas.conf:/etc/zookeeper/zookeeper_jaas.conf
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      # default config
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181      
+      # Auth config
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=BROKER:SASL_PLAINTEXT
+      - KAFKA_LISTENERS=BROKER://:9092
+      - KAFKA_ADVERTISED_LISTENERS=BROKER://kafka:9092
+      - KAFKA_LISTENER_NAME_BROKER_SASL_ENABLED_MECHANISMS=PLAIN
+      - KAFKA_INTER_BROKER_LISTENER_NAME=BROKER
+      - KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL=PLAIN
+      # etc config
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND=true
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_SUPER_USERS=User:admin
+      - KAFKA_LOG4J_LOGGERS=DEBUG,stdout
+      - KAFKA_OPTS=-Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf
+    volumes:
+      - ./kafka_server_jaas.conf:/etc/kafka/kafka_server_jaas.conf
+      - ./consumer_jaas.conf:/etc/kafka/consumer_jaas.conf
+      - ./producer_jaas.conf:/etc/kafka/producer_jaas.conf
