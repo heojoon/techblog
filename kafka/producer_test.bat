@@ -1,0 +1,1 @@
+docker-compose exec kafka bash -c "seq 10 | kafka-console-producer --request-required-acks 1 --broker-list localhost:9092 --topic test-topic --producer.config /etc/kafka/producer_jaas.conf && echo 'Produced 10 mesages.'"
